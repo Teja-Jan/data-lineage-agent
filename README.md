@@ -1,6 +1,6 @@
 # Enterprise Data Lineage and Impact Intelligent Analysis
 
-[Open In Colab](https://colab.research.google.com/github/Teja-Jan/data-lineage-agent/blob/master/enterprise-lineage-colab.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Teja-Jan/data-lineage-agent/blob/master/enterprise-lineage-colab.ipynb)
 
 An advanced, AI-driven data intelligence platform built to dynamically analyze end-to-end data lineage, track historical changes, and determine enterprise risk impact across complex data ecosystems.
 
@@ -106,4 +106,4 @@ To spin up a fully isolated, externalized web demo from Github:
 1. Click the [Open In Colab] link at the top of this documentation.
 2. Ensure you have populated your SendGrid API credentials inside the `.env` creation block in the notebook.
 3. Choose "Run All".
-4. Colab will generate a public `loca.lt` tunnel allowing access to the web interface from anywhere.
+4. Colab will generate a secure Google Native Proxy link allowing high-speed, password-free access to the web interface.

@@ -1,0 +1,504 @@
+{
+    "data": [
+        {
+            "campaign_id": "CAMP-500",
+            "campaign_name": "Azure Interpreter Promo",
+            "campaign_type": "Retention",
+            "channel": "Search",
+            "budget_usd": 11329.93,
+            "status": "Active",
+            "start_date": "2025-02-10",
+            "end_date": "2025-10-03"
+        },
+        {
+            "campaign_id": "CAMP-501",
+            "campaign_name": "FireBrick Surveyor, insurance Promo",
+            "campaign_type": "Branding",
+            "channel": "Social Media",
+            "budget_usd": 50682.3,
+            "status": "Planned",
+            "start_date": "2024-07-02",
+            "end_date": "2025-05-25"
+        },
+        {
+            "campaign_id": "CAMP-502",
+            "campaign_name": "LemonChiffon Water quality scientist Promo",
+            "campaign_type": "Branding",
+            "channel": "Search",
+            "budget_usd": 42230.57,
+            "status": "Active",
+            "start_date": "2024-04-05",
+            "end_date": "2025-06-06"
+        },
+        {
+            "campaign_id": "CAMP-503",
+            "campaign_name": "LightBlue Hydrogeologist Promo",
+            "campaign_type": "Branding",
+            "channel": "Affiliate",
+            "budget_usd": 39707.35,
+            "status": "Active",
+            "start_date": "2025-01-17",
+            "end_date": "2025-08-28"
+        },
+        {
+            "campaign_id": "CAMP-504",
+            "campaign_name": "Pink Designer, exhibition/display Promo",
+            "campaign_type": "Growth",
+            "channel": "Email",
+            "budget_usd": 31411.23,
+            "status": "Completed",
+            "start_date": "2025-02-26",
+            "end_date": "2026-03-04"
+        },
+        {
+            "campaign_id": "CAMP-505",
+            "campaign_name": "Khaki Set designer Promo",
+            "campaign_type": "Growth",
+            "channel": "Social Media",
+            "budget_usd": 15418.84,
+            "status": "Planned",
+            "start_date": "2024-09-14",
+            "end_date": "2025-05-07"
+        },
+        {
+            "campaign_id": "CAMP-506",
+            "campaign_name": "Cyan Airline pilot Promo",
+            "campaign_type": "Retention",
+            "channel": "Search",
+            "budget_usd": 6037.87,
+            "status": "Active",
+            "start_date": "2025-01-01",
+            "end_date": "2026-02-09"
+        },
+        {
+            "campaign_id": "CAMP-507",
+            "campaign_name": "NavajoWhite Archivist Promo",
+            "campaign_type": "Branding",
+            "channel": "Search",
+            "budget_usd": 61453.62,
+            "status": "Active",
+            "start_date": "2024-04-09",
+            "end_date": "2025-12-27"
+        },
+        {
+            "campaign_id": "CAMP-508",
+            "campaign_name": "HoneyDew Social worker Promo",
+            "campaign_type": "Growth",
+            "channel": "Email",
+            "budget_usd": 59251.42,
+            "status": "Active",
+            "start_date": "2025-03-11",
+            "end_date": "2025-05-12"
+        },
+        {
+            "campaign_id": "CAMP-509",
+            "campaign_name": "Salmon Publishing copy Promo",
+            "campaign_type": "Branding",
+            "channel": "Search",
+            "budget_usd": 97538.45,
+            "status": "Active",
+            "start_date": "2025-02-27",
+            "end_date": "2025-12-12"
+        },
+        {
+            "campaign_id": "CAMP-510",
+            "campaign_name": "Orchid Ergonomist Promo",
+            "campaign_type": "Retention",
+            "channel": "Email",
+            "budget_usd": 19092.46,
+            "status": "Planned",
+            "start_date": "2024-05-04",
+            "end_date": "2025-12-10"
+        },
+        {
+            "campaign_id": "CAMP-511",
+            "campaign_name": "Gold Exhibition designer Promo",
+            "campaign_type": "Growth",
+            "channel": "Social Media",
+            "budget_usd": 54998.45,
+            "status": "Planned",
+            "start_date": "2024-09-19",
+            "end_date": "2025-07-11"
+        },
+        {
+            "campaign_id": "CAMP-512",
+            "campaign_name": "MediumOrchid Museum/gallery conservator Promo",
+            "campaign_type": "Branding",
+            "channel": "Social Media",
+            "budget_usd": 36441.0,
+            "status": "Active",
+            "start_date": "2024-11-10",
+            "end_date": "2025-10-19"
+        },
+        {
+            "campaign_id": "CAMP-513",
+            "campaign_name": "PaleGreen Water engineer Promo",
+            "campaign_type": "Growth",
+            "channel": "Email",
+            "budget_usd": 22388.28,
+            "status": "Completed",
+            "start_date": "2025-01-27",
+            "end_date": "2025-09-08"
+        },
+        {
+            "campaign_id": "CAMP-514",
+            "campaign_name": "ForestGreen Airline pilot Promo",
+            "campaign_type": "Branding",
+            "channel": "Search",
+            "budget_usd": 57044.94,
+            "status": "Planned",
+            "start_date": "2024-04-04",
+            "end_date": "2025-09-02"
+        },
+        {
+            "campaign_id": "CAMP-515",
+            "campaign_name": "BlanchedAlmond Microbiologist Promo",
+            "campaign_type": "Growth",
+            "channel": "Email",
+            "budget_usd": 63300.37,
+            "status": "Planned",
+            "start_date": "2024-04-16",
+            "end_date": "2025-11-21"
+        },
+        {
+            "campaign_id": "CAMP-516",
+            "campaign_name": "SeaGreen Data scientist Promo",
+            "campaign_type": "Retention",
+            "channel": "Search",
+            "budget_usd": 23008.1,
+            "status": "Planned",
+            "start_date": "2024-09-16",
+            "end_date": "2025-10-14"
+        },
+        {
+            "campaign_id": "CAMP-517",
+            "campaign_name": "Aquamarine Garment/textile technologist Promo",
+            "campaign_type": "Retention",
+            "channel": "Email",
+            "budget_usd": 38277.12,
+            "status": "Completed",
+            "start_date": "2024-05-19",
+            "end_date": "2025-11-10"
+        },
+        {
+            "campaign_id": "CAMP-518",
+            "campaign_name": "Fuchsia Equality and diversity officer Promo",
+            "campaign_type": "Retention",
+            "channel": "Social Media",
+            "budget_usd": 33526.37,
+            "status": "Completed",
+            "start_date": "2024-08-09",
+            "end_date": "2025-04-12"
+        },
+        {
+            "campaign_id": "CAMP-519",
+            "campaign_name": "LightSlateGray Horticultural therapist Promo",
+            "campaign_type": "Branding",
+            "channel": "Affiliate",
+            "budget_usd": 82643.05,
+            "status": "Active",
+            "start_date": "2024-06-15",
+            "end_date": "2025-07-07"
+        },
+        {
+            "campaign_id": "CAMP-520",
+            "campaign_name": "Ivory Scientist, research (life sciences) Promo",
+            "campaign_type": "Growth",
+            "channel": "Search",
+            "budget_usd": 21787.75,
+            "status": "Completed",
+            "start_date": "2024-05-16",
+            "end_date": "2026-01-27"
+        },
+        {
+            "campaign_id": "CAMP-521",
+            "campaign_name": "SandyBrown Accountant, chartered public finance Promo",
+            "campaign_type": "Retention",
+            "channel": "Search",
+            "budget_usd": 66683.22,
+            "status": "Planned",
+            "start_date": "2024-09-20",
+            "end_date": "2025-08-27"
+        },
+        {
+            "campaign_id": "CAMP-522",
+            "campaign_name": "Chartreuse Geoscientist Promo",
+            "campaign_type": "Growth",
+            "channel": "Search",
+            "budget_usd": 71065.56,
+            "status": "Planned",
+            "start_date": "2025-03-14",
+            "end_date": "2025-10-08"
+        },
+        {
+            "campaign_id": "CAMP-523",
+            "campaign_name": "HoneyDew Petroleum engineer Promo",
+            "campaign_type": "Retention",
+            "channel": "Affiliate",
+            "budget_usd": 43364.83,
+            "status": "Active",
+            "start_date": "2024-05-28",
+            "end_date": "2025-06-18"
+        },
+        {
+            "campaign_id": "CAMP-524",
+            "campaign_name": "Brown Teacher, adult education Promo",
+            "campaign_type": "Branding",
+            "channel": "Email",
+            "budget_usd": 49646.37,
+            "status": "Active",
+            "start_date": "2024-09-19",
+            "end_date": "2025-06-09"
+        },
+        {
+            "campaign_id": "CAMP-525",
+            "campaign_name": "Purple Scientific laboratory technician Promo",
+            "campaign_type": "Retention",
+            "channel": "Search",
+            "budget_usd": 11692.11,
+            "status": "Completed",
+            "start_date": "2025-02-12",
+            "end_date": "2025-08-09"
+        },
+        {
+            "campaign_id": "CAMP-526",
+            "campaign_name": "LightSkyBlue Engineer, biomedical Promo",
+            "campaign_type": "Retention",
+            "channel": "Email",
+            "budget_usd": 38989.23,
+            "status": "Planned",
+            "start_date": "2024-05-22",
+            "end_date": "2025-08-24"
+        },
+        {
+            "campaign_id": "CAMP-527",
+            "campaign_name": "Azure Control and instrumentation engineer Promo",
+            "campaign_type": "Growth",
+            "channel": "Affiliate",
+            "budget_usd": 37765.18,
+            "status": "Active",
+            "start_date": "2025-01-19",
+            "end_date": "2026-03-17"
+        },
+        {
+            "campaign_id": "CAMP-528",
+            "campaign_name": "LightCoral Medical sales representative Promo",
+            "campaign_type": "Growth",
+            "channel": "Search",
+            "budget_usd": 69311.22,
+            "status": "Completed",
+            "start_date": "2024-11-09",
+            "end_date": "2025-04-19"
+        },
+        {
+            "campaign_id": "CAMP-529",
+            "campaign_name": "Coral Investment analyst Promo",
+            "campaign_type": "Branding",
+            "channel": "Affiliate",
+            "budget_usd": 14655.61,
+            "status": "Planned",
+            "start_date": "2024-03-19",
+            "end_date": "2026-02-26"
+        },
+        {
+            "campaign_id": "CAMP-530",
+            "campaign_name": "Gray Fisheries officer Promo",
+            "campaign_type": "Growth",
+            "channel": "Social Media",
+            "budget_usd": 11374.48,
+            "status": "Completed",
+            "start_date": "2024-07-30",
+            "end_date": "2025-07-28"
+        },
+        {
+            "campaign_id": "CAMP-531",
+            "campaign_name": "LightGreen Research officer, political party Promo",
+            "campaign_type": "Branding",
+            "channel": "Social Media",
+            "budget_usd": 43958.25,
+            "status": "Active",
+            "start_date": "2024-10-12",
+            "end_date": "2025-05-05"
+        },
+        {
+            "campaign_id": "CAMP-532",
+            "campaign_name": "Yellow Diagnostic radiographer Promo",
+            "campaign_type": "Retention",
+            "channel": "Affiliate",
+            "budget_usd": 36769.91,
+            "status": "Planned",
+            "start_date": "2024-11-28",
+            "end_date": "2026-02-27"
+        },
+        {
+            "campaign_id": "CAMP-533",
+            "campaign_name": "MediumSpringGreen Pilot, airline Promo",
+            "campaign_type": "Branding",
+            "channel": "Social Media",
+            "budget_usd": 86574.53,
+            "status": "Active",
+            "start_date": "2024-05-16",
+            "end_date": "2026-02-11"
+        },
+        {
+            "campaign_id": "CAMP-534",
+            "campaign_name": "MintCream Higher education lecturer Promo",
+            "campaign_type": "Growth",
+            "channel": "Email",
+            "budget_usd": 25126.69,
+            "status": "Planned",
+            "start_date": "2024-04-03",
+            "end_date": "2025-05-18"
+        },
+        {
+            "campaign_id": "CAMP-535",
+            "campaign_name": "MediumSlateBlue Forensic psychologist Promo",
+            "campaign_type": "Retention",
+            "channel": "Email",
+            "budget_usd": 39558.54,
+            "status": "Completed",
+            "start_date": "2025-01-27",
+            "end_date": "2025-10-15"
+        },
+        {
+            "campaign_id": "CAMP-536",
+            "campaign_name": "Indigo Forensic psychologist Promo",
+            "campaign_type": "Branding",
+            "channel": "Search",
+            "budget_usd": 58076.77,
+            "status": "Completed",
+            "start_date": "2024-10-02",
+            "end_date": "2025-08-18"
+        },
+        {
+            "campaign_id": "CAMP-537",
+            "campaign_name": "Yellow Clothing/textile technologist Promo",
+            "campaign_type": "Growth",
+            "channel": "Social Media",
+            "budget_usd": 14468.53,
+            "status": "Planned",
+            "start_date": "2024-05-13",
+            "end_date": "2025-11-21"
+        },
+        {
+            "campaign_id": "CAMP-538",
+            "campaign_name": "SlateGray Sport and exercise psychologist Promo",
+            "campaign_type": "Branding",
+            "channel": "Email",
+            "budget_usd": 20466.42,
+            "status": "Active",
+            "start_date": "2024-03-25",
+            "end_date": "2025-09-16"
+        },
+        {
+            "campaign_id": "CAMP-539",
+            "campaign_name": "Maroon Intelligence analyst Promo",
+            "campaign_type": "Branding",
+            "channel": "Email",
+            "budget_usd": 91145.62,
+            "status": "Completed",
+            "start_date": "2024-11-13",
+            "end_date": "2025-11-02"
+        },
+        {
+            "campaign_id": "CAMP-540",
+            "campaign_name": "SaddleBrown Camera operator Promo",
+            "campaign_type": "Retention",
+            "channel": "Search",
+            "budget_usd": 92928.48,
+            "status": "Active",
+            "start_date": "2024-08-25",
+            "end_date": "2025-06-05"
+        },
+        {
+            "campaign_id": "CAMP-541",
+            "campaign_name": "Azure Scientist, product/process development Promo",
+            "campaign_type": "Retention",
+            "channel": "Social Media",
+            "budget_usd": 72809.19,
+            "status": "Active",
+            "start_date": "2024-05-11",
+            "end_date": "2026-02-02"
+        },
+        {
+            "campaign_id": "CAMP-542",
+            "campaign_name": "DarkCyan Jewellery designer Promo",
+            "campaign_type": "Growth",
+            "channel": "Affiliate",
+            "budget_usd": 99765.82,
+            "status": "Completed",
+            "start_date": "2024-03-25",
+            "end_date": "2025-06-05"
+        },
+        {
+            "campaign_id": "CAMP-543",
+            "campaign_name": "DarkOliveGreen Medical secretary Promo",
+            "campaign_type": "Retention",
+            "channel": "Search",
+            "budget_usd": 53357.81,
+            "status": "Completed",
+            "start_date": "2024-03-28",
+            "end_date": "2025-11-12"
+        },
+        {
+            "campaign_id": "CAMP-544",
+            "campaign_name": "MediumSeaGreen Dentist Promo",
+            "campaign_type": "Branding",
+            "channel": "Social Media",
+            "budget_usd": 87102.76,
+            "status": "Completed",
+            "start_date": "2025-02-13",
+            "end_date": "2025-12-03"
+        },
+        {
+            "campaign_id": "CAMP-545",
+            "campaign_name": "LightYellow Surgeon Promo",
+            "campaign_type": "Retention",
+            "channel": "Affiliate",
+            "budget_usd": 31333.66,
+            "status": "Planned",
+            "start_date": "2024-11-07",
+            "end_date": "2025-07-16"
+        },
+        {
+            "campaign_id": "CAMP-546",
+            "campaign_name": "MediumOrchid Educational psychologist Promo",
+            "campaign_type": "Growth",
+            "channel": "Email",
+            "budget_usd": 11243.49,
+            "status": "Active",
+            "start_date": "2025-02-17",
+            "end_date": "2025-05-20"
+        },
+        {
+            "campaign_id": "CAMP-547",
+            "campaign_name": "PaleGoldenRod Photographer Promo",
+            "campaign_type": "Retention",
+            "channel": "Email",
+            "budget_usd": 87966.74,
+            "status": "Completed",
+            "start_date": "2024-09-24",
+            "end_date": "2025-12-05"
+        },
+        {
+            "campaign_id": "CAMP-548",
+            "campaign_name": "PaleGreen Volunteer coordinator Promo",
+            "campaign_type": "Growth",
+            "channel": "Email",
+            "budget_usd": 78368.42,
+            "status": "Planned",
+            "start_date": "2024-08-31",
+            "end_date": "2025-08-25"
+        },
+        {
+            "campaign_id": "CAMP-549",
+            "campaign_name": "Azure Volunteer coordinator Promo",
+            "campaign_type": "Retention",
+            "channel": "Affiliate",
+            "budget_usd": 34740.21,
+            "status": "Completed",
+            "start_date": "2024-12-10",
+            "end_date": "2025-07-26"
+        }
+    ]
+}

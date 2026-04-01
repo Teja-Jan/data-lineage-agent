@@ -1,0 +1,232 @@
+# ==============================================================================
+# PLUG-AND-PLAY CONFIGURATION — Edit this file to switch domains
+# No application code changes required. Just update this file and run:
+#   python run_pipeline.py
+# ==============================================================================
+
+domain: healthcare   # Options: healthcare | retail | finance | supply_chain | (any custom name)
+
+# --- Database Connection ---
+# Uncomment and fill in to connect to a real database instead of SQLite
+# db_type: postgresql          # postgresql | snowflake | sqlserver | mysql | sqlite
+# db_host: your-host.com
+# db_port: 5432
+# db_name: enterprise_db
+# db_user: your_user
+# db_password: your_password
+
+# --- API Connection ---
+# Uncomment to ingest from a REST API endpoint
+# api_endpoint: https://api.yourcompany.com/v1/lineage_feed
+# api_token: your_bearer_token
+
+# --- Flat File Path ---
+# Uncomment to ingest from a shared drive or data lake
+# flat_file_path: /mnt/shared/data/export.csv
+# flat_file_format: csv     # csv | parquet | json
+
+# --- Cloud Storage ---
+# Uncomment to ingest from AWS S3 or Azure Data Lake
+# cloud_provider: aws           # aws | azure | gcp
+# cloud_bucket: my-data-lake
+# cloud_key: exports/lineage_data.csv
+
+# ==============================================================================
+# DOMAIN DEFINITIONS
+# These drive the "Available Assets" in the UI, BI Reports, and Risk Rules.
+# Only change this block when switching domains.No code changes needed.
+# ==============================================================================
+
+domains:
+  healthcare:
+    rdbms_tables:
+      - Patients
+      - Providers
+      - Facilities
+      - Diagnoses
+      - Medications
+    flat_files:
+      - Lab_Results.csv
+      - Vitals_Export.csv
+      - Prescription_History.csv
+    api_endpoints:
+      - clearinghouse.io/claims
+      - epic.com/fhir_patient
+      - cms.gov/medicare_rates
+    target_tables:
+      - Dim_Patient
+      - Dim_Provider
+      - Dim_Facility
+      - Dim_Diagnosis
+      - Fact_Clinical_Encounter
+      - Fact_Claims
+    bi_reports:
+      - Hospital Readmission Risk Dashboard
+      - Financial Claims Outcome Report
+      - Provider Performance Scorecard
+      - Regional Outbreak Heatmap
+    risk_rules:
+      - keyword: Patient
+        level: HIGH
+        message: "Modifying this asset breaks `patient_sk` FK linking Fact_Clinical_Encounter."
+      - keyword: Encounter
+        level: HIGH
+        message: "Changes will cascade to all downstream clinical BI reports."
+      - keyword: Provider
+        level: MEDIUM
+        message: "Provider key changes will orphan financial facts in Fact_Claims."
+      - keyword: Claims
+        level: MEDIUM
+        message: "Update clearinghouse ETL mapping before altering this asset."
+
+  retail:
+    rdbms_tables:
+      - Customers
+      - Products
+      - Stores
+      - Employees
+      - Suppliers
+    flat_files:
+      - Sales_Export.csv
+      - Inventory_Snapshot.csv
+      - Promo_Export.csv
+    api_endpoints:
+      - salesforce.com/leads
+      - marketingcloud.io/campaigns
+      - payments.stripe.com/transactions
+    target_tables:
+      - Dim_Customer
+      - Dim_Product
+      - Dim_Store
+      - Fact_Sales
+      - Fact_Inventory
+    bi_reports:
+      - Sales Performance Dashboard
+      - Customer Segmentation Report
+      - Margin Analysis Report
+      - Inventory Health Report
+      - Executive KPI Scorecard
+    risk_rules:
+      - keyword: Product
+        level: HIGH
+        message: "Modifying this asset breaks `product_sk` FK to Fact_Sales."
+      - keyword: Customer
+        level: HIGH
+        message: "Customer key changes will orphan historical orders in Fact_Sales."
+      - keyword: Sales
+        level: MEDIUM
+        message: "Changes affect all downstream revenue BI dashboards."
+
+  finance:
+    rdbms_tables:
+      - Accounts
+      - Transactions
+      - CostCenters
+      - Budgets
+      - GLEntries
+    flat_files:
+      - Trial_Balance.csv
+      - AP_Extract.csv
+      - AR_Aging.csv
+    api_endpoints:
+      - sap.com/finance_api
+      - coupa.com/invoices
+      - bloomberg.com/rates
+    target_tables:
+      - Dim_Account
+      - Dim_CostCenter
+      - Fact_Ledger
+      - Fact_Cashflow
+    bi_reports:
+      - P&L Summary Dashboard
+      - Cash Flow Analysis Report
+      - Budget vs Actuals Scorecard
+      - AP/AR Aging Report
+    risk_rules:
+      - keyword: Account
+        level: HIGH
+        message: "Account key changes will orphan all ledger transactions in Fact_Ledger."
+      - keyword: Budget
+        level: MEDIUM
+        message: "Budget changes cascade to P&L and Cost Center reports."
+
+  automotive:
+    rdbms_tables:
+      - Vehicles
+      - AssemblyLines
+      - Telematics
+      - Dealers
+      - WarrantyClaims
+    target_tables:
+      - Dim_Vehicle
+      - Dim_Dealer
+      - Fact_Manufacturing
+      - Fact_Warranty
+    bi_reports:
+      - Production Yield Dashboard
+      - Warranty Cost Analysis
+      - Dealer Performance Report
+    risk_rules:
+      - keyword: Vehicle
+        level: HIGH
+        message: "Critical Constraint: Modifying the VIN structure breaks the global Fact_Manufacturing telemetry sequence. Halt execution if downstream schemas aren't synced."
+      - keyword: Assembly
+        level: MEDIUM
+        message: "Operational Warning: Modifying assembly mappings alters the Production Yield KPI thresholds natively."
+      - keyword: Warranty
+        level: HIGH
+        message: "Financial Risk: Changes to claims data immediately flags Finance/Accounting P&L ledgers. Engage Business Owners."
+
+  supply_chain:
+    rdbms_tables:
+      - Inventory
+      - Shipments
+      - Warehouses
+      - Suppliers
+      - PurchaseOrders
+    target_tables:
+      - Dim_Supplier
+      - Dim_Warehouse
+      - Fact_Shipment
+      - Fact_InventoryLevels
+    bi_reports:
+      - Logistics Velocity Map
+      - Supplier Reliability Scorecard
+      - Inventory Hold Report
+    risk_rules:
+      - keyword: Shipment
+        level: HIGH
+        message: "Execution Block: Modifying Shipment tracking cascades errors into the Logistics Velocity Map. A full dry-run is mandated."
+      - keyword: Supplier
+        level: MEDIUM
+        message: "Governance Alert: Altering Vendor IDs orphans existing Fact_InventoryLevels historical spans."
+      - keyword: Warehouse
+        level: MEDIUM
+        message: "Restate location geometries via explicit API handshakes prior to metadata updates."
+
+  insurance:
+    rdbms_tables:
+      - Policies
+      - Claims
+      - Underwriters
+      - Brokers
+      - Premiums
+    target_tables:
+      - Dim_Policy
+      - Dim_Broker
+      - Fact_Premium
+      - Fact_ClaimPayout
+    bi_reports:
+      - Actuarial Risk Heatmap
+      - Broker Commission Ledger
+      - Premium Collection Report
+    risk_rules:
+      - keyword: Policy
+        level: HIGH
+        message: "PII Violation Risk: Modifying Policy data models threatens SSN and HIPAA compliance thresholds natively."
+      - keyword: Claim
+        level: HIGH
+        message: "Underwriting Constraint: Altering Claims payout mappings directly degrades the Actuarial Risk Heatmap accuracy."
+      - keyword: Premium
+        level: MEDIUM
+        message: "Financial Warning: Premium ledger shifts require strict Treasury approval prior to execution."

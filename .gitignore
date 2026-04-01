@@ -1,0 +1,18 @@
+venv/
+__pycache__/
+*.pyc
+.env
+.streamlit/
+data/chroma_db/
+logs/
+output/
+reports/visualizations/
+*.html
+
+# Secrets and Keys
+vault.key
+src/vault.key
+data/secrets/
+.gemini/
+brain/
+*.log

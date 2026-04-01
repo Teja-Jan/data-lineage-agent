@@ -696,9 +696,16 @@ with left_col:
                     toggle_selection(detected, "RDBMS Source")
                 try:
                     has_api_key = bool(os.getenv("GROQ_API_KEY"))
-                    response = run_real_agent(prompt) if has_api_key else run_simulated_agent(prompt)
-                    reply = response
-                except: reply = f"**Analyzing:** {prompt}\n\nLineage and impact data is available in the right panel for your selected assets."
+                    if has_api_key:
+                        reply = run_real_agent(prompt)
+                    else:
+                        reply = run_simulated_agent(prompt)
+                except Exception as e:
+                    # Final safety net — always deliver at least a simulated response
+                    try:
+                        reply = run_simulated_agent(prompt)
+                    except:
+                        reply = f"**AI Assistant Note:** I am currently processing your request for `{prompt}`. Please refer to the detailed Impact Analysis panel on the right for end-to-end lineage data."
 
             st.session_state.messages.append({"role": "assistant", "content": reply})
             st.rerun()

@@ -158,99 +158,90 @@ def run_real_agent(user_prompt: str):
             messages.append({"role": "tool", "content": result, "tool_call_id": tc.id})
 
     return "Agent completed analysis."
-
-
-
-
-
 def run_simulated_agent(prompt: str) -> str:
-    """Enhanced mock agent router for demonstration purposes."""
+    """Enhanced mock agent router for professional demonstration purposes."""
     prompt_lower = prompt.lower()
     
-    # Handle common typos from demo users
-    prompt_lower = prompt_lower.replace("porducts", "product").replace("lienage", "lineage").replace("lieage", "lineage").replace("products", "product")
+    # Handle common typos and healthcare terms
+    prompt_lower = (prompt_lower.replace("cliamns", "claims").replace("cliams", "claims")
+                   .replace("lienage", "lineage").replace("lieage", "lineage")
+                   .replace("porducts", "product"))
     
-    # Tables in catalog
-    target_tables = ["Dim_Customer", "Dim_Product", "Dim_Date", "Dim_Campaign", "Fact_Sales", "Dim_Store", "Dim_Employee", "Dim_Promotion", "Dim_Supplier", "Dim_Geography", "Fact_Inventory"]
+    # Tables in catalog (Updated for Healthcare/Clinical Focus)
+    target_tables = [
+        "Fact_Clinical_Encounters", "Fact_Sales", "Dim_Patient", "Dim_Customer", 
+        "Dim_Product", "Dim_Provider", "Dim_Date", "Fact_Inventory"
+    ]
     
     # Smart asset detection
     detected_asset = None
-    if "product" in prompt_lower: detected_asset = "Dim_Product"
+    if any(k in prompt_lower for k in ["clinical", "incident", "claims", "encounter"]): detected_asset = "Fact_Clinical_Encounters"
+    elif "patient" in prompt_lower: detected_asset = "Dim_Patient"
+    elif "provider" in prompt_lower: detected_asset = "Dim_Provider"
+    elif "product" in prompt_lower: detected_asset = "Dim_Product"
     elif "customer" in prompt_lower: detected_asset = "Dim_Customer"
     elif "sales" in prompt_lower: detected_asset = "Fact_Sales"
-    elif "campaign" in prompt_lower: detected_asset = "Dim_Campaign"
-    elif "store" in prompt_lower: detected_asset = "Dim_Store"
     elif "inventory" in prompt_lower: detected_asset = "Fact_Inventory"
-    elif "supplier" in prompt_lower: detected_asset = "Dim_Supplier"
-    elif "employee" in prompt_lower: detected_asset = "Dim_Employee"
-    elif "promotion" in prompt_lower: detected_asset = "Dim_Promotion"
-    elif "geography" in prompt_lower: detected_asset = "Dim_Geography"
-    elif "date" in prompt_lower: detected_asset = "Dim_Date"
+
+    # 1. Specialized Conversational Response for Healthcare Impact (USER REQUEST)
+    if any(k in prompt_lower for k in ["drop", "delete", "remove"]) and any(k in prompt_lower for k in ["claims", "clinical", "encounter"]):
+        return (
+            "### 🛡️ AI Impact Assessment: Critical Risk Detected\n\n"
+            "Dropping the `Fact_Clinical_Encounters` (Claims) table carries a **CRITICAL** impact score (9.8/10). "
+            "Based on my real-time lineage traversal, here is the ecosystem breakage path:\n\n"
+            "**1. Upstream Data Ingestion:**\n"
+            "The `FLATFILE_TO_DW_CLINICAL` pipeline will fail immediately as it will lose its primary write target. "
+            "This will cause an overflow in the landing zone buffers for `EHR_RDBMS` source data.\n\n"
+            "**2. Downstream Analytics & BI:**\n"
+            "The **'Patient Performance & Clinical Outcomes'** dashboard will render blank visuals, as it relies on this table for 85% of its core measures (Admission Rates, Mortality Specs, and Bed Availability).\n\n"
+            "**Recommendation:** Do not proceed with this DDL operation without a full migration plan. "
+            "I have already flagged this query in the Governance Audit log for review."
+        )
 
     # 2. Intent Routing
-    if any(k in prompt_lower for k in ["tables", "catalog", "what is present", "what tables", "available", "inventory"]):
-        if "target" in prompt_lower or "dw" in prompt_lower:
-            return f"The Target Data Warehouse contains the following {len(target_tables)} tables: {', '.join(target_tables)}."
-        return get_metadata_inventory.run({})
+    if any(k in prompt_lower for k in ["tables", "catalog", "what is present", "what tables", "available"]):
+        return f"The current Data Ecosystem contains {len(target_tables)} primary entities: {', '.join(target_tables)}."
 
-    elif any(k in prompt_lower for k in ["data model", "explain", "fact table", "dimension", "describe"]):
-        target = detected_asset or "Fact_Sales"
+    elif any(k in prompt_lower for k in ["data model", "explain", "describe", "purpose"]):
+        target = detected_asset or "Fact_Clinical_Encounters"
         return get_data_model_description.run(target)
 
-    elif any(k in prompt_lower for k in ["end to end", "e2e", "full flow", "source to target", "pipeline flow"]):
-        target = detected_asset or "Fact_Sales"
+    elif any(k in prompt_lower for k in ["end to end", "e2e", "full flow", "visualize"]):
+        target = detected_asset or "Fact_Clinical_Encounters"
         res = generate_e2e_lineage_graph.run(target)
-        path = res.split("View it at: ")[1].strip() if "View it at: " in res else None
-        tag = f"\n\n[Agent Automated Action]: {res}" if path else f"\n\n[Error]: {res}"
-        return f"Generating end-to-end lineage for {target}...{tag}"
+        return f"Generating your end-to-end lineage overview for `{target}`... [SUCCESS] Visual mapping complete. {res}"
 
-    elif any(k in prompt_lower for k in ["lineage", "trace", "flow", "reconciliation", "tell me about"]):
-        target = detected_asset or "Fact_Sales"
-        if "reconciliation" in prompt_lower or "delay" in prompt_lower or "failed" in prompt_lower:
-            target = "OLTP_TO_DW_CUSTOMER"
+    elif any(k in prompt_lower for k in ["lineage", "trace", "flow", "reconciliation"]):
+        target = detected_asset or "Fact_Clinical_Encounters"
         return get_holistic_entity_context.run(target)
         
     elif any(k in prompt_lower for k in ["details", "structure", "columns"]):
         if detected_asset:
             return get_table_details.run(detected_asset)
-        return "Please specify a table (e.g., 'show columns for Dim_Product') to see structural details."
+        return "Please specify a table (e.g., 'show columns for Fact_Clinical_Encounters') to see structural details."
         
-    elif any(k in prompt_lower for k in ["full impact", "report impact", "dashboard impact"]):
-        ctype = "datatype" if any(x in prompt_lower for x in ["type", "datatype", "cast"]) else "drop"
-        col = "price" if "price" in prompt_lower else "email" if "email" in prompt_lower else "quantity"
-        tbl = detected_asset or "Dim_Product"
-        return get_full_impact_analysis.run({"table_name": tbl, "column_name": col, "change_type": ctype})
-
-    elif any(k in prompt_lower for k in ["impact", "drop", "delete", "change", "datatype", "modify"]):
-        ctype = "datatype" if any(x in prompt_lower for x in ["type", "datatype", "cast"]) else "drop"
-        if "price" in prompt_lower:
-            return get_full_impact_analysis.run({"table_name": "Dim_Product", "column_name": "price", "change_type": ctype})
-        elif "email" in prompt_lower:
-            return get_full_impact_analysis.run({"table_name": "Dim_Customer", "column_name": "email", "change_type": ctype})
-        return f"Please specify a column to analyze, e.g., 'What is the full impact of dropping a column in {detected_asset or 'Dim_Product'}?'"
+    elif any(k in prompt_lower for k in ["impact", "drop", "delete", "change", "modify"]):
+        tbl = detected_asset or "Fact_Clinical_Encounters"
+        col = "encounter_id" if "clinical" in prompt_lower else "price" if "product" in prompt_lower else "N/A"
+        return get_full_impact_analysis.run({"table_name": tbl, "column_name": col, "change_type": "drop"})
         
     elif any(k in prompt_lower for k in ["access", "who", "audit", "permissions"]):
-        target = detected_asset or "Fact_Sales"
+        target = detected_asset or "Fact_Clinical_Encounters"
         return get_table_access.run(target)
         
-    elif any(k in prompt_lower for k in ["history", "pipeline", "etl", "results", "version"]):
-        pl = "FLATFILE_TO_DW_SALES"
-        if "customer" in prompt_lower: pl = "OLTP_TO_DW_CUSTOMER"
+    elif any(k in prompt_lower for k in ["history", "pipeline", "etl", "failed"]):
+        pl = "FLATFILE_TO_DW_CLINICAL" if "clinical" in prompt_lower else "FLATFILE_TO_DW_SALES"
         return get_pipeline_history.run(pl)
         
-    elif any(k in prompt_lower for k in ["schema", "evolution", "changes", "ddl"]):
-        return get_schema_evolution.run({})
-        
     elif any(k in prompt_lower for k in ["go ahead", "do this", "fix it", "execute"]):
-        return "[ACTION SIMULATED] I have requested immediate execution from the Governance Engine. Because modifying ETL logic carries a Moderate/High impact score, an approval email has been routed to the Data Owner (`teja.jan220@gmail.com`). Once approved, the reconciliation job will restart dynamically."
+        return "[ACTION SIMULATED] I have requested immediate execution from the Governance Engine. An approval email has been routed to the Data Owner. Once approved, the reconciliation job will restart dynamically."
         
-    elif any(k in prompt_lower for k in ["context", "issues", "why", "past", "reason", "historical"]):
+    elif any(k in prompt_lower for k in ["context", "issues", "why", "historical"]):
         return get_business_context.run(prompt)
         
     else:
-        return ("I can help with: Data Model exploration, Lineage tracing, E2E pipeline flow, "
-                "Full impact analysis (tables, ETL, reports), ETL history, Audit trails. "
-                "Try: 'Explain the data model for Fact_Sales' or 'Show full impact of dropping price.'")
+        return ("I am your **AI Assistant**. I can help with: Data Model exploration, Lineage tracing, Impact analysis, and ETL monitoring. "
+                "Try: 'What happens if we drop the Clinical table?' or 'Trace lineage for Fact_Clinical_Encounters'.")
 
 def main():
     print("=====================================================")

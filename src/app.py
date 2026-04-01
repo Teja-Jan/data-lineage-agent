@@ -1245,15 +1245,27 @@ with right_col:
                 has_excel = False
                 try:
                     with pd.ExcelWriter(excel_buffer, engine='openpyxl') as writer:
+                        # 1. Intelligence Impact (Summary of risks and audit trail)
                         df_impact.drop(columns=["Recommendations"]).to_excel(writer, index=False, sheet_name='Intelligence Impact')
+                        
+                        # 2. ETL Logs
                         if not df_etl.empty: df_etl.to_excel(writer, index=False, sheet_name='ETL Logs')
                         else: pd.DataFrame([{"Logs": "None"}]).to_excel(writer, index=False, sheet_name='ETL Logs')
+                        
+                        # 3. DB Audit
                         if not df_audit.empty: df_audit.to_excel(writer, index=False, sheet_name='DB Audit')
                         else: pd.DataFrame([{"Audit": "None"}]).to_excel(writer, index=False, sheet_name='DB Audit')
+                        
+                        # 4. Access Control
                         if not df_acc.empty: df_acc.to_excel(writer, index=False, sheet_name='Access Control')
                         else: pd.DataFrame([{"Rules": "None"}]).to_excel(writer, index=False, sheet_name='Access Control')
-                        if not df_bi.empty: df_bi.to_excel(writer, index=False, sheet_name='BI Reports')
-                        else: pd.DataFrame([{"Reports": "None"}]).to_excel(writer, index=False, sheet_name='BI Reports')
+                        
+                        # 5. Recommendations (DEDICATED 5th TAB)
+                        if not df_impact.empty:
+                            df_rec = df_impact[["Asset Name", "Recommendations"]].copy()
+                            df_rec.to_excel(writer, index=False, sheet_name='Recommendations')
+                        else:
+                            pd.DataFrame([{"Recommendations": "N/A"}]).to_excel(writer, index=False, sheet_name='Recommendations')
                     has_excel = True
                 except Exception as e:
                     st.error(f"XLSX Export Engine module failure: {e}. Please ensure `openpyxl` is installed.")

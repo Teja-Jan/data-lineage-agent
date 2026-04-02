@@ -210,7 +210,8 @@ def toggle_selection(name: str, asset_type: str):
         try:
             result = generate_e2e_lineage_graph.run(name)
             if result and ".html" in str(result):
-                m = re.search(r'([A-Za-z]:[/\\][\w\\\\/\-\.\s]+\.html)', str(result))
+                # Platform-agnostic regex to find the .html path after the 'at:' prefix
+                m = re.search(r'at:\s*(.*\.html)', str(result))
                 if m and os.path.exists(m.group(1).strip()):
                     st.session_state.current_graph = m.group(1).strip()
         except: pass
@@ -690,11 +691,70 @@ with left_col:
                     wizard["active"] = False
                     reply = "[SUCCESS] Connection wizard complete. How else can I help?"
             else:
-                # Regular AI assistant
-                all_known = selected_names + src_full + csv_full + apis_full + etls_full + tgt_full + bi_full
-                detected = next((n for n in all_known if n.lower() in prompt.lower()), None)
-                if detected:
-                    toggle_selection(detected, "RDBMS Source")
+                # --- Enhanced AI Asset Detection with Alias Mapping ---
+                # This ensures that typing "claims" in the chat correctly highlights the "claims" table in the UI.
+                synonyms = {
+                    "claims": "Fact_Clinical_Encounters",
+                    "clinical": "Fact_Clinical_Encounters",
+                    "encounter": "Fact_Clinical_Encounters",
+                    "patient": "Dim_Patient",
+                    "provider": "Dim_Provider",
+                    "product": "Dim_Product",
+                    "customer": "Dim_Customer",
+                    "sales": "Fact_Sales"
+                }
+                
+                detected_name, detected_type = None, None
+                p_lower = prompt.lower()
+
+                # 1. Check for aliases first
+                for syn, target in synonyms.items():
+                    if syn in p_lower:
+                        detected_name = target
+                        break
+
+                # 2. Check for exact matches in full inventory
+                inventory_lists = {
+                    "RDBMS Source": [x[0] for x in src_full],
+                    "Flat File": [x[0] for x in csv_full],
+                    "API Endpoint": [x[0] for x in apis_full],
+                    "ETL Pipeline": etls_full,
+                    "Target DW Table": tgt_full,
+                    "BI Report": bi_full
+                }
+
+                if not detected_name:
+                    for atype, names in inventory_lists.items():
+                        match = next((n for n in names if n.lower() in p_lower), None)
+                        if match:
+                            detected_name, detected_type = match, atype
+                            break
+                
+                # 3. Infer type if name was found via synonym
+                if detected_name and not detected_type:
+                    for atype, names in inventory_lists.items():
+                        if detected_name in names:
+                            detected_type = atype
+                            break
+
+                if detected_name and detected_type:
+                    # --- [FIX] FORCE SELECTION (Dont just toggle, ENSURE it is active) ---
+                    current_sel = st.session_state.get("selections", [])
+                    if not any(s["name"] == detected_name for s in current_sel):
+                        if len(current_sel) < MAX_SELECTIONS:
+                            st.session_state.selections.append({"name": detected_name, "type": detected_type})
+                    
+                    st.session_state.panel_entity = detected_name
+                    
+                    # Force graph generation for this asset immediately
+                    try:
+                        res = generate_e2e_lineage_graph.run(detected_name)
+                        if res and ".html" in str(res):
+                            m = re.search(r'at:\s*(.*\.html)', str(res))
+                            if m and os.path.exists(m.group(1).strip()):
+                                st.session_state.current_graph = m.group(1).strip()
+                    except: pass
+
                 try:
                     has_api_key = bool(os.getenv("GROQ_API_KEY"))
                     if has_api_key:
@@ -702,13 +762,13 @@ with left_col:
                     else:
                         reply = run_simulated_agent(prompt)
                 except Exception as e:
-                    # Final safety net — always deliver at least a simulated response
                     try:
                         reply = run_simulated_agent(prompt)
                     except:
-                        reply = f"**AI Assistant Note:** I am currently processing your request for `{prompt}`. Please refer to the detailed Impact Analysis panel on the right for end-to-end lineage data."
+                        reply = f"**AI Assistant Note:** I am processing your request for `{prompt}`. Please refer to the detailed Impact Analysis panel on the right for end-to-end lineage data."
 
-            st.session_state.messages.append({"role": "assistant", "content": reply})
+                st.session_state.messages.append({"role": "assistant", "content": reply})
+                st.rerun() # --- [FIX] MANDATORY RERUN TO UPDATE UI PANELS ---
             st.rerun()
 
 # ===================================================================

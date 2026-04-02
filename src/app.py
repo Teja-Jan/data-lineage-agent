@@ -738,15 +738,33 @@ with left_col:
                             break
 
                 if detected_name and detected_type:
-                    # --- [FIX] FORCE SELECTION (Dont just toggle, ENSURE it is active) ---
-                    current_sel = st.session_state.get("selections", [])
-                    if not any(s["name"] == detected_name for s in current_sel):
-                        if len(current_sel) < MAX_SELECTIONS:
-                            st.session_state.selections.append({"name": detected_name, "type": detected_type})
-                    
+                    # --- [CONTROL FIX] TOTAL UI REFRESH (AI Assistant Sync) ---
+                    # 1. Clear all old selections to focus strictly on the user's chat query
+                    st.session_state.selections = []
                     st.session_state.panel_entity = detected_name
                     
-                    # Force graph generation for this asset immediately
+                    # 2. Map asset type to its sidebar widget key
+                    key_map = {
+                        "RDBMS Source": "lb_rdbms",
+                        "Flat File": "lb_csv",
+                        "API Endpoint": "lb_api",
+                        "ETL Pipeline": "lb_etl",
+                        "Target DW Table": "lb_tgt",
+                        "BI Report": "lb_bi"
+                    }
+                    
+                    # 3. Synchronize the Sidebar dropdown state directly
+                    target_key = key_map.get(detected_type)
+                    if target_key:
+                        # Clear other dropdowns and set the target one
+                        for k in key_map.values():
+                            st.session_state[k] = []
+                        st.session_state[target_key] = [detected_name]
+                    
+                    # 4. Update the selections list for the main logic
+                    st.session_state.selections = [{"name": detected_name, "type": detected_type}]
+                    
+                    # 5. Force graph generation for this asset immediately
                     try:
                         res = generate_e2e_lineage_graph.run(detected_name)
                         if res and ".html" in str(res):
@@ -768,7 +786,7 @@ with left_col:
                         reply = f"**AI Assistant Note:** I am processing your request for `{prompt}`. Please refer to the detailed Impact Analysis panel on the right for end-to-end lineage data."
 
                 st.session_state.messages.append({"role": "assistant", "content": reply})
-                st.rerun() # --- [FIX] MANDATORY RERUN TO UPDATE UI PANELS ---
+                st.rerun() # --- [FIX] MANDATORY RERUN TO UPDATE ALL PANELS ---
             st.rerun()
 
 # ===================================================================

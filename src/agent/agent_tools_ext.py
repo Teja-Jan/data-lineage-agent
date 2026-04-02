@@ -238,17 +238,33 @@ def generate_e2e_lineage_graph(table_name: str) -> str:
     placeholders = ",".join(["?"] * len(names))
     lower_names = [n.lower() for n in names]
 
-    # Try exact match first for all selected items
+    # --- 1. Pre-expand search seeds for ETL and BI assets ---
+    expanded_names = set(lower_names)
+    
+    # Check for ETL Pipelines and add their associated tables
+    cursor.execute(f"SELECT DISTINCT table_name FROM table_catalog WHERE LOWER(etl_pipeline) IN ({placeholders})", lower_names)
+    for r in cursor.fetchall():
+        if r[0]: expanded_names.add(r[0].lower())
+        
+    # Check for BI Reports and add their associated DW tables
+    cursor.execute(f"SELECT DISTINCT dw_table FROM report_dependency WHERE LOWER(report_name) IN ({placeholders})", lower_names)
+    for r in cursor.fetchall():
+        if r[0]: expanded_names.add(r[0].lower())
+
+    # --- 2. Main Lineage Query (Using expanded seeds) ---
+    final_names = list(expanded_names)
+    final_placeholders = ",".join(["?"] * len(final_names))
+    
     cursor.execute(f"""
         SELECT dlm.source_system, dlm.source_table, tc.etl_pipeline, dlm.target_table
         FROM data_lineage_map dlm
         LEFT JOIN table_catalog tc ON tc.table_name = dlm.target_table
-        WHERE LOWER(dlm.source_table) IN ({placeholders})
-           OR LOWER(dlm.target_table) IN ({placeholders})
-    """, lower_names + lower_names)
+        WHERE LOWER(dlm.source_table) IN ({final_placeholders})
+           OR LOWER(dlm.target_table) IN ({final_placeholders})
+    """, final_names + final_names)
     rows = cursor.fetchall()
 
-    # If no rows, try matching against source system patterns
+    # If still no rows, try matching against source system patterns (fallback)
     if not rows:
         like_conditions = " OR ".join(["LOWER(dlm.source_system) LIKE ?" for _ in names])
         like_params = [f"%{n}%" for n in lower_names]
@@ -259,36 +275,6 @@ def generate_e2e_lineage_graph(table_name: str) -> str:
             WHERE {like_conditions}
         """, like_params)
         rows = cursor.fetchall()
-
-    # If still no rows, check if these are BI Reports in report_dependency
-    if not rows:
-        cursor.execute(f"SELECT DISTINCT dw_table FROM report_dependency WHERE LOWER(report_name) IN ({placeholders})", lower_names)
-        rep_tables = [r[0] for r in cursor.fetchall() if r[0]]
-        if rep_tables:
-            rep_placeholders = ",".join(["?"] * len(rep_tables))
-            cursor.execute(f"""
-                SELECT dlm.source_system, dlm.source_table, tc.etl_pipeline, dlm.target_table
-                FROM data_lineage_map dlm
-                LEFT JOIN table_catalog tc ON tc.table_name = dlm.target_table
-                WHERE LOWER(dlm.source_table) IN ({rep_placeholders})
-                   OR LOWER(dlm.target_table) IN ({rep_placeholders})
-            """, rep_tables + rep_tables)
-            rows = cursor.fetchall()
-
-    # If still no rows, check if these are ETL Pipelines
-    if not rows:
-        cursor.execute(f"SELECT DISTINCT table_name FROM table_catalog WHERE LOWER(etl_pipeline) IN ({placeholders})", lower_names)
-        pl_tables = [r[0] for r in cursor.fetchall() if r[0]]
-        if pl_tables:
-            pl_placeholders = ",".join(["?"] * len(pl_tables))
-            cursor.execute(f"""
-                SELECT dlm.source_system, dlm.source_table, tc.etl_pipeline, dlm.target_table
-                FROM data_lineage_map dlm
-                LEFT JOIN table_catalog tc ON tc.table_name = dlm.target_table
-                WHERE LOWER(dlm.source_table) IN ({pl_placeholders})
-                   OR LOWER(dlm.target_table) IN ({pl_placeholders})
-            """, pl_tables + pl_tables)
-            rows = cursor.fetchall()
 
     # Fetch downstream BI reports for the target tables in scope
 

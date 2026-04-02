@@ -562,7 +562,8 @@ with left_col:
                 names_for_graph = [d["name"] for d in deduped]
                 result = generate_e2e_lineage_graph.run("\n".join(names_for_graph))
                 if result and ".html" in str(result):
-                    m = re.search(r'([A-Za-z]:[/\\][\w\\\\/\-\.\s]+\.html)', str(result))
+                    # Platform-agnostic regex to find the .html path after the 'at:' prefix
+                    m = re.search(r'at:\s*(.*\.html)', str(result))
                     if m and os.path.exists(m.group(1).strip()):
                         st.session_state.current_graph = m.group(1).strip()
             except: pass

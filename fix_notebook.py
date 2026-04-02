@@ -1,0 +1,128 @@
+import json
+
+notebook = {
+    "cells": [
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "# 🚀 Enterprise Data Lineage & Impact Intelligence (Production)\n",
+                "**Secure 1-Click Deployment for Governance Demos**\n"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 📦 Step 0: Environment Setup\n",
+                "**CRITICAL**: You must run this cell to pull the latest AI Assistant fixes from GitHub."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": None,
+            "metadata": {},
+            "outputs": [],
+            "source": [
+                "import os\n",
+                "import shutil\n",
+                "\n",
+                "# FORCE CLEANUP of any old versions\n",
+                "if os.path.exists('data-lineage-agent'):\n",
+                "    print(\"Cleaning up old repository files...\")\n",
+                "    shutil.rmtree('data-lineage-agent')\n",
+                "\n",
+                "print(\"📥 Pulling latest Production branch (Master)...\\n\")\n",
+                "!git clone https://github.com/Teja-Jan/data-lineage-agent.git\n",
+                "%cd data-lineage-agent\n",
+                "\n",
+                "print(\"\\n📦 Installing Dependencies...\\n\")\n",
+                "!pip install -q -r requirements.txt\n",
+                "print(\"\\n[SUCCESS] Environment is now 100% synchronized with the latest GitHub code.\")"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 🔐 Step 1: Secure Configuration\n",
+                "Enter your SendGrid credentials in the form on the right and run the cell."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": None,
+            "metadata": {
+                "cellView": "form"
+            },
+            "outputs": [],
+            "source": [
+                "#@title 🔐 Enter Credentials { display-mode: \"form\" }\n",
+                "\n",
+                "SENDGRID_API_KEY = \"\" #@param {type:\"string\"}\n",
+                "SENDGRID_FROM_EMAIL = \"\" #@param {type:\"string\"}\n",
+                "GOVERNANCE_RECIPIENT_EMAIL = \"\" #@param {type:\"string\"}\n",
+                "\n",
+                "import os\n",
+                "with open(\".env\", \"w\") as f:\n",
+                "    f.write(f\"SENDGRID_API_KEY={SENDGRID_API_KEY}\\n\")\n",
+                "    f.write(f\"SENDGRID_FROM_EMAIL={SENDGRID_FROM_EMAIL}\\n\")\n",
+                "    f.write(f\"GOVERNANCE_RECIPIENT={GOVERNANCE_RECIPIENT_EMAIL}\\n\")\n",
+                "    f.write(\"ENTERPRISE_MODE=DEMO\\n\")\n",
+                "    f.write(\"EMAIL_PROVIDER=SENDGRID\\n\")\n",
+                "\n",
+                "print(\"\\n[SUCCESS] Credentials securely stored in .env\")"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### ⚙️ Step 2: Boot Engine & Launch Web View\n"
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": None,
+            "metadata": {},
+            "outputs": [],
+            "source": [
+                "import os\n",
+                "import time\n",
+                "from google.colab import output\n",
+                "\n",
+                "print(\"Booting Application Engine...\")\n",
+                "os.system(\"nohup python -m streamlit run src/app.py --server.port 8501 --server.enableCORS=false --server.enableXsrfProtection=false > colab_logs.txt 2>&1 &\")\n",
+                "time.sleep(5) \n",
+                "\n",
+                "print(\"\\n=======================================================\")\n",
+                "print(\"🟢 SECURE LINK GENERATED!\")\n",
+                "print(\"   Click the link below to open your enterprise dashboard.\")\n",
+                "print(\"=======================================================\")\n",
+                "try:\n",
+                "    from google.colab.output import eval_js\n",
+                "    url = eval_js(\"google.colab.kernel.proxyPort(8501)\")\n",
+                "    print(f\"\\n👉 Click Here: {url}\")\n",
+                "except:\n",
+                "    output.serve_kernel_port_as_window(8501)"
+            ]
+        }
+    ],
+    "metadata": {
+        "colab": {
+            "provenance": []
+        },
+        "kernelspec": {
+            "display_name": "Python 3",
+            "name": "python3"
+        },
+        "language_info": {
+            "name": "python"
+        }
+    },
+    "nbformat": 4,
+    "nbformat_minor": 4
+}
+
+with open('enterprise-lineage-colab.ipynb', 'w') as f:
+    json.dump(notebook, f, indent=2)
